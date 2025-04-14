@@ -108,21 +108,23 @@ const NowPlayingCard = ({ song, roomID }) => {
   const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="flex flex-col bg-white bg-opacity-80 rounded-lg shadow p-3 mb-4">
+    <div 
+    onClick={togglePlay}
+    className="flex flex-col bg-white bg-opacity-80 rounded-lg shadow p-3 mb-4">
       <div className="flex items-center">
         <div
           className={`h-12 w-12 rounded-md bg-gradient-to-br ${song.color} mr-3 flex-shrink-0 ${
             isPlaying ? 'animate-pulse' : ''
           }`}
         ></div>
-        <div className="flex-grow">
+        <div className="flex-grow"
+        >
           <h3 className="text-sm font-semibold truncate text-ellipsis text-gray-800">{song.title}</h3>
           <p className="text-xs text-gray-600">{song.artist}</p>
           <p className="text-xs text-gray-400 italic">{song.album}</p>
         </div>
         <div className="ml-3">
           <button
-            onClick={togglePlay}
             className="h-8 w-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white flex items-center justify-center shadow hover:shadow-md"
           >
             {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
