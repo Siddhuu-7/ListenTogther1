@@ -169,32 +169,33 @@ const ChatRoom = () => {
         console.warn("No file selected");
         return;
       }
-  
       const authRes = await fetch(import.meta.env.VITE_AUTH_API);
       const auth = await authRes.json();
-  
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("fileName", file.name);
-      formData.append("publicKey", import.meta.env.VITE_PUBLIC_KEY);
-      formData.append("signature", auth.signature);
-      formData.append("expire", auth.expire);
-      formData.append("token", auth.token);
-      formData.append("folder", `ListenTogetherCustm${roomId}`);
-     
-      const res = await fetch(import.meta.env.VITE_IMGKIT_API, {
-        method: "POST",
-        body: formData,
-      });
-  
-      const data = await res.json();
+      const FolderName=`${roomId}`.replace(/[^a-zA-Z0-9-_]/g, "_"); 
+      
+
+     const formData = new FormData();
+     formData.append("file", file);
+     formData.append("fileName", file.name);
+     formData.append("publicKey", import.meta.env.VITE_PUBLIC_KEY);
+     formData.append("signature", auth.signature);
+     formData.append("expire", auth.expire);
+     formData.append("token", auth.token);
+     formData.append("folder",  `${FolderName}`);
+
+     const res = await fetch(import.meta.env.VITE_IMGKIT_API, {
+       method: "POST",
+       body: formData,
+     });
+     const data = await res.json();
+    console.log(data)
       await fetch(import.meta.env.VITE_SAVE_FOLDERS, {
         method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-type': 'application/json',
         },
-        body: JSON.stringify({FolderName: `ListenTogetherCustm${roomId}`})
+        body: JSON.stringify({FolderName: FolderName})
       });
       
       const formattedSong = {
@@ -206,6 +207,7 @@ const ChatRoom = () => {
         duration: `${Math.floor(data.size/1000000)} MB`,
         color: `from-pink-400 to-purple-400`
       };      
+      console.log("sending cutome somg",formattedSong)
       
       socket.emit('customeSongDetails', {formattedSong, roomId, senderId: socketId});
       setSongs((prevSongs) => [formattedSong, ...prevSongs]);
@@ -407,31 +409,33 @@ const ChatRoom = () => {
               {isloading && <Skeleton />}
               
               {filteredSongs.length > 0 ? (
-                filteredSongs.map((item) => (
-                  <div
-                      key={item.id}
-                      className={`flex items-center space-x-4 p-2 rounded-lg cursor-pointer transition shadow-sm border border-gray-100 hover:bg-gradient-to-r ${item.color}`}
-                      onClick={() => {
-                        setSong(item);
-                        socket.emit('songDetails', { song: item, roomId });
-                        setIsSongListOpen(false);
-                      }}
-                    >
+  Array.from(
+    new Map(filteredSongs.map(item => [item.id, item])).values()
+  ).map((item) => (
+    <div
+      key={item.id}
+      className={`flex truncate items-center space-x-4 p-2 rounded-lg cursor-pointer transition shadow-sm border border-gray-100 hover:bg-gradient-to-r ${item.color}`}
+      onClick={() => {
+        setSong(item);
+        socket.emit('songDetails', { song: item, roomId });
+        setIsSongListOpen(false);
+      }}
+    >
+      <img
+        src={item.thumbnail ? music1 : DefaultPng}
+        alt={item.title}
+        className="w-12 h-12 rounded-md object-cover"
+      />
+      <div>
+        <p className="font-medium truncate text-ellipsis">{item.title}</p>
+        <p className="text-sm text-gray-500">{item.artist}</p>
+      </div>
+    </div>
+  ))
+) : (
+  <p className="text-center col-span-2 text-gray-500">No songs found.</p>
+)}
 
-                    <img
-                      src={item.thumbnail?music1 : DefaultPng}
-                      alt={item.title}
-                      className="w-12 h-12 rounded-md object-cover"
-                    />
-                    <div>
-                      <p className="font-medium truncate">{item.title}</p>
-                      <p className="text-sm text-gray-500">{item.artist}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center col-span-2 text-gray-500">No songs found.</p>
-              )}
             </div>
           </div>
         </div>
