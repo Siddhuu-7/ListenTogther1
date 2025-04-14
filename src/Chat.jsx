@@ -56,7 +56,7 @@ const ChatRoom = () => {
     if(!r){
       setTimeout(()=>{
         setIsReviewOpen(true)
-      },5000);
+      },50000);
     }
   
   }, []);

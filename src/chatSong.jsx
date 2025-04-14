@@ -116,7 +116,7 @@ const NowPlayingCard = ({ song, roomID }) => {
           }`}
         ></div>
         <div className="flex-grow">
-          <h3 className="text-sm font-semibold text-gray-800">{song.title}</h3>
+          <h3 className="text-sm font-semibold truncate text-ellipsis text-gray-800">{song.title}</h3>
           <p className="text-xs text-gray-600">{song.artist}</p>
           <p className="text-xs text-gray-400 italic">{song.album}</p>
         </div>
