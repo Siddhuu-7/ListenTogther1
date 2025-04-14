@@ -4,6 +4,7 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import NowPlayingCard from './chatSong';
 import DefaultPng from './assets/music.png';
 import { io } from 'socket.io-client';
+import music1 from './assets/music1.png'
 import Review from './components/review';
 const socket = io(import.meta.env.VITE_BACKEND_API);
 
@@ -50,7 +51,6 @@ const ChatRoom = () => {
       }
     };
     const r=sessionStorage.getItem('review')
-
     fetchSongs();
     fetchCustomSongs();
     if(!r){
@@ -208,7 +208,7 @@ const ChatRoom = () => {
       };      
       
       socket.emit('customeSongDetails', {formattedSong, roomId, senderId: socketId});
-      setSongs([formattedSong, ...songs]);
+      setSongs((prevSongs) => [formattedSong, ...prevSongs]);
       
       if (data) {       
         setCustomSongChangeTrigger((prev) => prev + 1);
@@ -409,16 +409,17 @@ const ChatRoom = () => {
               {filteredSongs.length > 0 ? (
                 filteredSongs.map((item) => (
                   <div
-                    key={item.id}
-                    className="flex items-center space-x-4 p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition border border-gray-100 shadow-sm"
-                    onClick={() => {
-                      setSong(item);
-                      socket.emit('songDetails', { song: item, roomId });
-                      setIsSongListOpen(false);
-                    }}
-                  >
+                      key={item.id}
+                      className={`flex items-center space-x-4 p-2 rounded-lg cursor-pointer transition shadow-sm border border-gray-100 hover:bg-gradient-to-r ${item.color}`}
+                      onClick={() => {
+                        setSong(item);
+                        socket.emit('songDetails', { song: item, roomId });
+                        setIsSongListOpen(false);
+                      }}
+                    >
+
                     <img
-                      src={item.thumbnail || DefaultPng}
+                      src={item.thumbnail?music1 : DefaultPng}
                       alt={item.title}
                       className="w-12 h-12 rounded-md object-cover"
                     />
