@@ -44,6 +44,7 @@ const ChatRoom = () => {
           duration: `${Math.floor(item.size / 1000000)} MB`, 
           color: `from-pink-400 to-purple-400`, 
         }));
+        console.log('Admin Added Songs',formattedSongs)
 
         setSongs(formattedSongs);
       } catch (error) {
@@ -56,7 +57,7 @@ const ChatRoom = () => {
     if(!r){
       setTimeout(()=>{
         setIsReviewOpen(true)
-      },50000);
+      },60000);
     }
   
   }, []);
@@ -427,7 +428,7 @@ const ChatRoom = () => {
         className="w-12 h-12 rounded-md object-cover"
       />
       <div>
-        <p className="font-medium truncate text-ellipsis">{item.title}</p>
+        <p className="font-medium truncate text-ellipsis">{item.title.replace(/\[.*?\]\s*\d+\s*-\s*/, '')}</p>
         <p className="text-sm text-gray-500">{item.artist}</p>
       </div>
     </div>
