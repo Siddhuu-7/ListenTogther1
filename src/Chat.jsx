@@ -201,7 +201,7 @@ const ChatRoom = () => {
       
       const formattedSong = {
         id: data.fileId,
-        title: data.embeddedMetadata?.title || data.name,
+        title: data.embeddedMetadata?.title || data.name.replace(/\[.*?\]\s*\d+\s*-\s*/, ''),
         artist: data.embeddedMetadata?.Artist || "Unknown Artist",
         url: data.url,
         thumbnail: data.thumbnail,
@@ -231,7 +231,7 @@ const ChatRoom = () => {
 
       const formattedSongs = result.data.map((item) => ({
         id: item.fileId,
-        title: item.embeddedMetadata?.Title || item.name,
+        title: item.embeddedMetadata?.Title || item.name.replace(/\[.*?\]\s*\d+\s*-\s*/, ''),
         artist: item.embeddedMetadata?.Artist || "Unknown Artist",
         url: item.url,
         thumbnail: item.thumbnail,
