@@ -226,7 +226,7 @@ const ChatRoom = () => {
   const fetchCustomSongs = async () => {
     try {
       const FolderName=`${roomId}`.replace(/[^a-zA-Z0-9-_]/g, "_"); 
-      const response = await fetch(`${import.meta.env.VITE_TMP_MUSIC_DATA_FETCH}?folder=ListenTogetherCustm${FolderName}`);
+      const response = await fetch(`${import.meta.env.VITE_TMP_MUSIC_DATA_FETCH}?folder=${FolderName}`);
       const result = await response.json();
 
       const formattedSongs = result.data.map((item) => ({
