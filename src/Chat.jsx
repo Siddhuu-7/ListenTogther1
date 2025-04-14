@@ -182,7 +182,7 @@ const ChatRoom = () => {
      formData.append("signature", auth.signature);
      formData.append("expire", auth.expire);
      formData.append("token", auth.token);
-     formData.append("folder",  `${FolderName}`);
+     formData.append("folder",  `tmpFolder/${FolderName}`);
 
      const res = await fetch(import.meta.env.VITE_IMGKIT_API, {
        method: "POST",
