@@ -201,7 +201,7 @@ const ChatRoom = () => {
       
       const formattedSong = {
         id: data.fileId,
-        title: data.embeddedMetadata?.title || data.name.replace(/\[.*?\]\s*\d+\s*-\s*/, ''),
+        title:  data.name.replace(/\[.*?\]\s*\d+\s*-\s*/, ''),
         artist: data.embeddedMetadata?.Artist || "Unknown Artist",
         url: data.url,
         thumbnail: data.thumbnail,
